@@ -7,7 +7,7 @@ import {
   deletarLivro
 } from '../controllers/livrosController.js'
 import { verificarToken } from '../middlewares/authMiddleware.js'
-import { verificarAdmin } from '../middlewares/adiminMiddleware.ts'
+import { verificarAdmin } from '../middlewares/adiminMiddleware.js'
 
 const router = Router()
 

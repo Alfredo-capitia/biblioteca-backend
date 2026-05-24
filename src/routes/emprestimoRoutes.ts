@@ -3,9 +3,9 @@ import {
   listarEmprestimos,
   criarEmprestimo,
   devolverLivro
-} from '../controllers/emprestimoController.ts'
-import { verificarToken } from '../middlewares/authMiddleware.ts'
-import { verificarAdmin } from '../middlewares/adiminMiddleware.ts'
+} from '../controllers/emprestimoController.js'
+import { verificarToken } from '../middlewares/authMiddleware.js'
+import { verificarAdmin } from '../middlewares/adiminMiddleware.js'
 
 const router = Router()
 
