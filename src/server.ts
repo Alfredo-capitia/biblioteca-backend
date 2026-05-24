@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js'
 import LivrosRoutes from './routes/livrosRoutes.js'
 import emprestimoRoutes from './routes/emprestimoRoutes.js'
 import multasRoutes from './routes/multasRoutes.js'
+import carteiraRoutes from './routes/carteiraRoutes.js'
 
 dotenv.config()
 
@@ -19,6 +20,7 @@ app.use('/auth', authRoutes)
 app.use('/livros', LivrosRoutes)
 app.use('/emprestimos', emprestimoRoutes)
 app.use('/multas', multasRoutes)
+app.use('/carteira', carteiraRoutes)
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`)

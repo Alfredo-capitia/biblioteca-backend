@@ -1,15 +1,12 @@
 import { Request, Response } from 'express'
 import { supabase } from '../config/supabase.js'
 import jwt from 'jsonwebtoken'
-import bcrypt from 'bcryptjs'
 
 const JWT_SECRET = process.env.JWT_SECRET!
 
-// Registro de usuário comum
+// ✅ Registro de usuário comum
 export const registrarUsuario = async (req: Request, res: Response) => {
   const { nome, email, senha } = req.body
-
-  const senhaHash = await bcrypt.hash(senha, 10)
 
   const { data: authData, error: authError } = await supabase.auth.signUp({
     email,
@@ -18,16 +15,24 @@ export const registrarUsuario = async (req: Request, res: Response) => {
 
   if (authError) return res.status(400).json({ error: authError.message })
 
+  // Cria perfil
   const { error: perfilError } = await supabase
     .from('perfis')
     .insert({ id: authData.user!.id, nome, tipo: 'usuario' })
 
   if (perfilError) return res.status(400).json({ error: perfilError.message })
 
+  // ✅ Cria carteira automaticamente com saldo 0
+  const { error: carteiraError } = await supabase
+    .from('carteiras')
+    .insert({ usuario_id: authData.user!.id, saldo: 0 })
+
+  if (carteiraError) return res.status(400).json({ error: carteiraError.message })
+
   res.json({ message: 'Usuário registrado com sucesso!' })
 }
 
-// Registro de admin (exige chave secreta)
+// ✅ Registro de admin (exige chave secreta)
 export const registrarAdmin = async (req: Request, res: Response) => {
   const { nome, email, senha, chave_secreta } = req.body
 
@@ -42,16 +47,24 @@ export const registrarAdmin = async (req: Request, res: Response) => {
 
   if (authError) return res.status(400).json({ error: authError.message })
 
+  // Cria perfil admin
   const { error: perfilError } = await supabase
     .from('perfis')
     .insert({ id: authData.user!.id, nome, tipo: 'admin', chave_secreta })
 
   if (perfilError) return res.status(400).json({ error: perfilError.message })
 
+  // ✅ Cria carteira automaticamente com saldo 0
+  const { error: carteiraError } = await supabase
+    .from('carteiras')
+    .insert({ usuario_id: authData.user!.id, saldo: 0 })
+
+  if (carteiraError) return res.status(400).json({ error: carteiraError.message })
+
   res.json({ message: 'Admin registrado com sucesso!' })
 }
 
-// Login (usuário e admin)
+// ✅ Login (usuário e admin)
 export const login = async (req: Request, res: Response) => {
   const { email, senha } = req.body
 
