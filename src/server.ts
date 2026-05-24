@@ -17,7 +17,7 @@ app.use(express.json())
 
 //  Rota raiz
 app.get('/', (req, res) => {
-  res.json({ message: '🚀 API Biblioteca funcionando!', status: 'online' })
+  res.json({ message: ' API Biblioteca funcionando!', status: 'online' })
 })
 
 app.use('/auth', authRoutes)
