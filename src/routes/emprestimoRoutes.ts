@@ -10,7 +10,7 @@ import { verificarAdmin } from '../middlewares/adiminMiddleware.js'
 const router = Router()
 
 router.get('/', verificarToken, listarEmprestimos)
-router.post('/', verificarToken, verificarAdmin, criarEmprestimo)
+router.post('/', verificarToken, criarEmprestimo)
 router.put('/:id/devolver', verificarToken, verificarAdmin, devolverLivro)
 
 export default router
