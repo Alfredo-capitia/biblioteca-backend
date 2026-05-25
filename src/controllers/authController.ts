@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 
 const JWT_SECRET = process.env.JWT_SECRET!
 
-// ✅ Registro de usuário comum
+//  Registro de usuário comum
 export const registrarUsuario = async (req: Request, res: Response) => {
   const { nome, email, senha } = req.body
 
@@ -22,7 +22,7 @@ export const registrarUsuario = async (req: Request, res: Response) => {
 
   if (perfilError) return res.status(400).json({ error: perfilError.message })
 
-  // ✅ Cria carteira automaticamente com saldo 0
+  //  Cria carteira automaticamente com saldo 0
   const { error: carteiraError } = await supabase
     .from('carteiras')
     .insert({ usuario_id: authData.user!.id, saldo: 0 })
@@ -32,7 +32,7 @@ export const registrarUsuario = async (req: Request, res: Response) => {
   res.json({ message: 'Usuário registrado com sucesso!' })
 }
 
-// ✅ Registro de admin (exige chave secreta)
+//  Registro de admin (exige chave secreta)
 export const registrarAdmin = async (req: Request, res: Response) => {
   const { nome, email, senha, chave_secreta } = req.body
 
@@ -54,7 +54,7 @@ export const registrarAdmin = async (req: Request, res: Response) => {
 
   if (perfilError) return res.status(400).json({ error: perfilError.message })
 
-  // ✅ Cria carteira automaticamente com saldo 0
+  //  Cria carteira automaticamente com saldo 0
   const { error: carteiraError } = await supabase
     .from('carteiras')
     .insert({ usuario_id: authData.user!.id, saldo: 0 })
@@ -64,7 +64,7 @@ export const registrarAdmin = async (req: Request, res: Response) => {
   res.json({ message: 'Admin registrado com sucesso!' })
 }
 
-// ✅ Login (usuário e admin)
+//  Login (usuário e admin)
 export const login = async (req: Request, res: Response) => {
   const { email, senha } = req.body
 
@@ -88,4 +88,14 @@ export const login = async (req: Request, res: Response) => {
   )
 
   res.json({ token, tipo: perfil?.tipo, nome: perfil?.nome })
+}
+//  Listar todos os utilizadores (só admin)
+export const listarUsuarios = async (req: any, res: Response) => {
+  const { data, error } = await supabase
+    .from('perfis')
+    .select('id, nome, tipo')
+    .eq('tipo', 'usuario')
+
+  if (error) return res.status(400).json({ error: error.message })
+  res.json(data)
 }
