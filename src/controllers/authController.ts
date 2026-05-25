@@ -16,6 +16,7 @@ export const registrarUsuario = async (req: Request, res: Response) => {
   if (authError) return res.status(400).json({ error: authError.message })
 
   // Cria perfil
+  
   const { error: perfilError } = await supabase
     .from('perfis')
     .insert({ id: authData.user!.id, nome, tipo: 'usuario' })
